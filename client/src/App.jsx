@@ -708,7 +708,7 @@ function App() {
 
   const handleDeleteInternship = async (internshipId) => {
     try {
-      const response = await fetch(`/api/internships/${internshipId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/internships/${encodeURIComponent(internshipId)}`, { method: 'DELETE', headers: { Accept: 'application/json' }, credentials: 'same-origin' });
       const data = await safeParseResponse(response);
       if (!response.ok) {
         throw new Error(data.error || data.__raw || 'Unable to delete internship.');
