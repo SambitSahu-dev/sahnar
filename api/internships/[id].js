@@ -16,6 +16,7 @@ const parseBody = async (req) => {
 };
 
 export default async function handler(req, res) {
+  console.log('api/internships/[id] invoked', { method: req.method, url: req.url, headers: req.headers && { host: req.headers.host } });
   // extract id from query or pathname
   let id = req.query && req.query.id;
   if (!id) {
