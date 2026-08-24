@@ -1,0 +1,29 @@
+<svg width="960" height="640" viewBox="0 0 960 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cloudBg" x1="80" y1="80" x2="860" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F9FCFF" />
+      <stop offset="1" stop-color="#EAF4FF" />
+    </linearGradient>
+    <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#2D4DF5" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  <rect width="960" height="640" rx="40" fill="url(#cloudBg)"/>
+  <circle cx="756" cy="182" r="126" fill="#E6F6FF"/>
+  <circle cx="224" cy="500" r="112" fill="#EAF4FF"/>
+  <g filter="url(#cloudShadow)">
+    <rect x="156" y="140" width="648" height="360" rx="30" fill="#FFFFFF"/>
+  </g>
+  <rect x="224" y="216" width="160" height="104" rx="22" fill="#F4F9FF" stroke="#E3EEFA"/>
+  <path d="M284 242C284 228.745 294.745 218 308 218H324C337.255 218 348 228.745 348 242V258C348 271.255 337.255 282 324 282H308C294.745 282 284 271.255 284 258V242Z" fill="#2563EB"/>
+  <circle cx="316" cy="250" r="20" fill="#38BDF8"/>
+  <rect x="446" y="212" width="254" height="24" rx="12" fill="#DFF1FF"/>
+  <rect x="446" y="252" width="196" height="18" rx="9" fill="#EAF6FF"/>
+  <rect x="446" y="286" width="228" height="18" rx="9" fill="#EAF6FF"/>
+  <rect x="284" y="356" width="356" height="18" rx="9" fill="#DFF1FF"/>
+  <rect x="284" y="392" width="220" height="18" rx="9" fill="#EAF6FF"/>
+  <path d="M386 320C418 348 444 360 472 360" stroke="#2563EB" stroke-width="12" stroke-linecap="round"/>
+  <path d="M438 320C470 348 490 356 518 356" stroke="#38BDF8" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="692" cy="238" r="18" fill="#F59E0B" fill-opacity="0.24"/>
+  <circle cx="398" cy="214" r="10" fill="#2563EB" fill-opacity="0.18"/>
+</svg>

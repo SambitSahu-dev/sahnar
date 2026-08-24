@@ -1,0 +1,27 @@
+<svg width="960" height="640" viewBox="0 0 960 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dataBg" x1="80" y1="80" x2="860" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F9FCFF" />
+      <stop offset="1" stop-color="#EAF4FF" />
+    </linearGradient>
+    <filter id="dataShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#2D4DF5" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  <rect width="960" height="640" rx="40" fill="url(#dataBg)"/>
+  <circle cx="222" cy="182" r="122" fill="#E8F4FF"/>
+  <circle cx="732" cy="500" r="128" fill="#EAF8FF"/>
+  <g filter="url(#dataShadow)">
+    <rect x="156" y="132" width="648" height="388" rx="32" fill="#FFFFFF"/>
+  </g>
+  <rect x="216" y="194" width="520" height="264" rx="28" fill="#F6FAFF" stroke="#E3EEFA"/>
+  <path d="M262 404L360 300L440 344L518 252L648 214" stroke="#2563EB" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="360" cy="300" r="16" fill="#38BDF8"/>
+  <circle cx="440" cy="344" r="16" fill="#38BDF8"/>
+  <circle cx="518" cy="252" r="16" fill="#38BDF8"/>
+  <circle cx="648" cy="214" r="16" fill="#F59E0B"/>
+  <rect x="232" y="162" width="132" height="20" rx="10" fill="#DDEBFD"/>
+  <rect x="374" y="162" width="96" height="20" rx="10" fill="#EAF5FF"/>
+  <rect x="612" y="162" width="84" height="20" rx="10" fill="#EAF5FF"/>
+  <circle cx="678" cy="208" r="18" fill="#2563EB" fill-opacity="0.16"/>
+</svg>
