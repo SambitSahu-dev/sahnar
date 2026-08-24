@@ -4,6 +4,9 @@ import fs from 'fs';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
+import helmet from 'helmet';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -14,10 +17,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || '';
 
+app.use(helmet());
+app.use(compression());
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
-const connectDatabase = async () => {
+// Basic rate limiting for API endpoints
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 120 // limit each IP to 120 requests per windowMs
+});
+app.use(limiter);
+
+// Improved mongoose connection with retries
+const connectDatabase = async (retries = 5, backoff = 2000) => {
   if (!MONGO_URI) {
     console.warn('MONGO_URI is not configured. Running with in-memory internship storage.');
     return;
@@ -31,6 +44,10 @@ const connectDatabase = async () => {
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection failed:', error.message);
+    if (retries > 0) {
+      console.log(`Retrying MongoDB connection in ${backoff}ms... (${retries} retries left)`);
+      setTimeout(() => connectDatabase(retries - 1, backoff * 1.5), backoff);
+    }
   }
 };
 
@@ -242,6 +259,15 @@ app.patch('/api/internships/applications/:id', (req, res) => {
   return res.json({ applications });
 });
 
+// Healthcheck endpoints for orchestration
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/readiness', (req, res) => {
+  if (MONGO_URI && mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ ready: false });
+  }
+  return res.json({ ready: true });
+});
+
 const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
 if (fs.existsSync(clientDistPath)) {
   app.use(express.static(clientDistPath));
@@ -250,6 +276,20 @@ if (fs.existsSync(clientDistPath)) {
     res.sendFile(path.join(clientDistPath, 'index.html'));
   });
 }
+
+// Graceful shutdown
+const shutdown = async () => {
+  console.log('Shutting down server...');
+  try {
+    await mongoose.disconnect();
+  } catch (e) {
+    // ignore
+  }
+  process.exit(0);
+};
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
