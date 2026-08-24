@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
 import images from './assets/images';
 
+async function safeParseResponse(response) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return { __raw: text, __parseError: true, __status: response.status };
+  }
+}
+
 const defaultFeed = [
   { time: '09:00', title: 'R&D Lab', description: 'Optimizing LLM latency for edge devices...' },
   { time: '11:30', title: 'VAPT', description: 'New zero-day vulnerability patched for fintech module...' },
@@ -595,9 +604,9 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(adminLoginForm)
       });
-      const data = await response.json();
+      const data = await safeParseResponse(response);
       if (!response.ok) {
-        throw new Error(data.error || 'Admin login failed.');
+        throw new Error(data.error || data.__raw || 'Admin login failed.');
       }
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('sahnar-admin-auth', data.token);
@@ -633,9 +642,9 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(applicationForm)
       });
-      const data = await response.json();
+      const data = await safeParseResponse(response);
       if (!response.ok) {
-        throw new Error(data.error || 'Application submission failed.');
+        throw new Error(data.error || data.__raw || 'Application submission failed.');
       }
       setApplications(data.applications || []);
       setMessage(`Application submitted for ${data.internship?.title || 'the selected role'}. The admin dashboard is ready for review.`);
@@ -657,9 +666,9 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(adminForm)
       });
-      const data = await response.json();
+      const data = await safeParseResponse(response);
       if (!response.ok) {
-        throw new Error(data.error || 'Unable to save internship.');
+        throw new Error(data.error || data.__raw || 'Unable to save internship.');
       }
       setInternships(data.internships || []);
       setMessage(editingInternshipId ? 'Internship updated successfully.' : 'Internship posted successfully.');
@@ -700,9 +709,9 @@ function App() {
   const handleDeleteInternship = async (internshipId) => {
     try {
       const response = await fetch(`/api/internships/${internshipId}`, { method: 'DELETE' });
-      const data = await response.json();
+      const data = await safeParseResponse(response);
       if (!response.ok) {
-        throw new Error(data.error || 'Unable to delete internship.');
+        throw new Error(data.error || data.__raw || 'Unable to delete internship.');
       }
       setInternships(data.internships || []);
       setMessage('Internship removed.');
@@ -718,9 +727,9 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus })
       });
-      const data = await response.json();
+      const data = await safeParseResponse(response);
       if (!response.ok) {
-        throw new Error(data.error || 'Unable to update application status.');
+        throw new Error(data.error || data.__raw || 'Unable to update application status.');
       }
       setApplications(data.applications || []);
       setMessage('Candidate status updated.');
